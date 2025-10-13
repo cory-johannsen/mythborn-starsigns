@@ -1,0 +1,26 @@
+/* Compact “pill” under the PF2e sheet header */
+.mythborn-starsign {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.25rem;
+  padding: 0.25rem 0.5rem;
+  border: 1px solid var(--color-border-light-2, rgba(255,255,255,0.1));
+  border-radius: 6px;
+  width: fit-content;
+  background: rgba(255,255,255,0.03);
+  backdrop-filter: blur(2px);
+  font-size: 12px;
+  line-height: 1.2;
+}
+.mythborn-starsign label {
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  opacity: 0.75;
+}
+.mythborn-starsign .value {
+  font-weight: 600;
+}
+.mythborn-starsign .mythborn-starsign-assign {
+  margin-left: 0.5rem;
+}
