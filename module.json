@@ -2,14 +2,14 @@
   "id": "mythborn-starsigns",
   "title": "Mythborn Starsigns (PF2e)",
   "description": "<p>Adds a Starsign field to PF2e PCs and auto-rolls once from a rollable table at character creation.</p>",
-  "version": "13",
+  "version": "1.0.0",
   "compatibility": {
     "minimum": "13",
     "verified": "13"
   },
   "authors": [
     {
-      "name": "You",
+      "name": "Cory A. Johannsen",
       "url": "https://github.com/cory-johannsen/mythborn-starsigns",
       "flags": {}
     }
@@ -27,5 +27,9 @@
   "license": "MIT",
   "manifest": "modules/mythborn-starsign/module.json",
   "download": "modules/mythborn-starsign/module.zip",
-  "flags": {}
+  "flags": {
+    "mythborn-starsigns": {
+      "schema": 1
+    }
+  }
 }
