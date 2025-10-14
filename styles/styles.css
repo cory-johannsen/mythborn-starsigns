@@ -1,78 +1,68 @@
-section.mythborn-starsigns-block, section.mythborn-starsigns-block * { box-sizing: border-box; }
-section.mythborn-starsigns-block .starsign-value,
-section.mythborn-starsigns-block .starsign-label { color: var(--color-text); }
-
-
-/* Corrected final class name to match JS */
-section.mythborn-starsigns-block { display: none; }
-
-
-/* Final, exact class used by the JS injection */
-section.mythborn-starsigns-block { display:none; }
-
-
-/* The actual used class */
-section.mythborn-starsigns-block { display:none; }
-
-
-/* === Real styles (matching JS: section.${MODULE_ID}-block) === */
-section.mythborn-starsigns-block { display:none; }
-
-
-/* Oops! The above were placeholders during drafting. Real class is: section.mythborn-starsigns-block? No — JS uses section.${MODULE_ID}-block -> section.mythborn-starsigns-block. Let's set final styles now: */
-section.mythborn-starsigns-block { display:none; }
-
-
-/* --- Final block styles (correct selector) --- */
-section.mythborn-starsigns-block { display: none; }
-
-
-/* To avoid confusion, here is the correct final selector using the exact class from JS: */
-section.mythborn-starsigns-block { display:none; }
-
-
-/*
-NOTE: The above was a drafting artifact. Below are the *actual* styles applied via the correct class name:
-*/
-section.mythborn-starsigns-blockx { display:none; }
-
-
-/* === Correct, final === */
-section.mythborn-starsigns-block /* intentionally left unused */ {}
-
-
-/* ---- REAL styles (matching JS string 'section." + MODULE_ID + "-block') ---- */
-section.mythborn-starsigns-block, section.mythborn-starsigns-block .starsign-label, section.mythborn-starsigns-block .starsign-value { /* no-op */ }
-
-
-/*
-Because the selector name got muddy above, let's just provide clean working rules with an attribute hook that won't break if class mismatches.
-*/
-section[class*="mythborn-starsigns-"] {
-display: grid;
-grid-template-columns: auto 1fr auto;
-gap: 6px;
-align-items: center;
-padding: 6px 8px;
-margin: 6px 8px;
-border: 1px solid var(--color-border-light-2);
-border-radius: 6px;
-background: var(--color-bg);
+/* Same block semantics as other detail fields */
+.pf2e.sheet.actor.character .detail.starsign {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  margin: 0; /* grid handles spacing */
 }
-section[class*="mythborn-starsigns-"] .starsign-label {
-font-weight: 600;
-opacity: 0.9;
+
+/* Label look/feel like PF2e */
+.pf2e.sheet.actor.character .detail.starsign > label {
+  text-transform: uppercase;
+  font-weight: 600;
+  font-size: 0.75rem;
+  letter-spacing: 0.06em;
+  opacity: 0.9;
 }
-section[class*="mythborn-starsigns-"] .starsign-value {
-white-space: nowrap;
-overflow: hidden;
-text-overflow: ellipsis;
+
+/* Input + small icon control */
+.pf2e.sheet.actor.character .detail.starsign .form-fields {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
 }
-section[class*="mythborn-starsigns-"] .starsign-reroll {
-line-height: 1;
-border: 1px solid var(--color-border-light-2);
-background: var(--color-bg-alt);
-padding: 4px 6px;
-border-radius: 4px;
-cursor: pointer;
+.pf2e.sheet.actor.character .detail.starsign input[type="text"] {
+  width: 100%;
+  height: 28px;
+  line-height: 1.2;
+  padding: 0.25rem 0.5rem;
+  background: var(--input-bg);
+  color: var(--input-color);
+  border: var(--input-border, 1px solid var(--color-border-light-2));
+  border-radius: var(--input-radius, 4px);
+}
+
+/* Dice button styled like the search buttons */
+.pf2e.sheet.actor.character .detail.starsign .starsign-reroll {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border: 1px solid var(--color-border-light-2);
+  border-radius: 4px;
+  background: var(--color-bg-alt);
+  text-decoration: none;
+  cursor: pointer;
+}
+.pf2e.sheet.actor.character .detail.starsign .starsign-reroll i {
+  font-size: 12px;
+  line-height: 1;
+}
+/* Use the same look as the dice button */
+.pf2e.sheet.actor.character .detail.starsign .starsign-pick {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border: 1px solid var(--color-border-light-2);
+  border-radius: 4px;
+  background: var(--color-bg-alt);
+  text-decoration: none;
+  cursor: pointer;
+}
+.pf2e.sheet.actor.character .detail.starsign .starsign-pick i {
+  font-size: 12px;
+  line-height: 1;
 }

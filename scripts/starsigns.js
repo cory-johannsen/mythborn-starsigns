@@ -9,133 +9,95 @@
 const MODULE_ID = "mythborn-starsigns";
 const TABLE_NAME = "The Constellations of the Mythborn";
 
-Hooks.once("init", () => {
-  console.log(`${MODULE_ID} | init`);
+function debugLog(message) {
+  console.log(`${MODULE_ID} | ${message}`)
+}
 
-  game.settings.register(MODULE_ID, "autoRerollIfMissing", {
-    name: "Auto-assign Starsign if missing on open",
-    hint: "If a character has no starsign set, automatically roll from the table when their sheet is opened (useful for migrated actors).",
-    scope: "world",
-    config: true,
-    type: Boolean,
-    default: true
-  });
-});
+function debugResult(name, result) {
+  // Handle null/undefined
+  if (!result) return;
 
-/**
- * Pre-create: assign a starsign from the rolltable to PF2e characters
- */
-Hooks.on("preCreateActor", async (actor, createData, options, userId) => {
-  try {
-    if (actor.type !== "character") return; // PF2e PCs
-    // Only do this once, and only if flag isn't already set by a compendium import, etc.
-    const existing = getProperty(createData, `flags.${MODULE_ID}.starsign`);
-    if (existing) return;
-
-    const table = game.tables?.getName?.(TABLE_NAME);
-    if (!table) {
-      console.warn(`${MODULE_ID} | RollTable not found: ${TABLE_NAME}`);
-      return;
+  // Use a replacer to avoid circular refs and function clutter
+  const seen = new WeakSet();
+  const safeJson = JSON.stringify(result, (key, value) => {
+    if (typeof value === "function") return "[Function]";
+    if (typeof value === "object" && value !== null) {
+      if (seen.has(value)) return "[Circular]";
+      seen.add(value);
     }
+    return value;
+  }, 2);
+
+  debugLog(` ${name}: ${safeJson}`)
+}
+
+Hooks.on("createActor", async (actor, options, userId) => {
+  try {
+    if (actor.type !== "character") return;
+    const table = game.tables?.getName?.(TABLE_NAME);
+    if (!table) return;
 
     const draw = await table.draw({ displayChat: false });
-    const result = draw?.results?.[0];
-    const starsignText = result?.text ?? result?.document?.text ?? result?.getChatText?.() ?? null;
-
-    if (!starsignText) {
-      console.warn(`${MODULE_ID} | No text found on table result.`);
+    const starsign = draw?.results?.[0] ?? null;
+    console.log(`${MODULE_ID} | createActor selecting starsign`, starsign)
+    if (!starsign) {
+      console.warn(`${MODULE_ID} | No starsign found table result.`);
       return;
     }
 
-    // Store to flags on the source before creation
-    actor.updateSource({ [`flags.${MODULE_ID}.starsign`]: starsignText.trim() });
+    // ✅ Persist as a real flag on the newly created doc
+    await actor.setFlag(MODULE_ID, "starsign", starsign);
   } catch (err) {
-    console.error(`${MODULE_ID} | preCreateActor error`, err);
+    console.error(`${MODULE_ID} | createActor`, err);
   }
 });
 
-/**
- * Inject Starsign UI into PF2e Character sheets
- */
-Hooks.on("renderActorSheet", async (app, html, data) => {
-  try {
-    const actor = app.actor;
-    if (!actor || actor.type !== "character") return;
+Hooks.on("renderActorSheet", (app, html) => {
+  const actor = app.actor;
+  if (!actor || actor.type !== "character") return;
 
-    const starsign = actor.getFlag(MODULE_ID, "starsign");
+  console.log(`${MODULE_ID} | renderActorSheet actor`, actor)
 
-    // Optionally autogenerate if missing (migration helper)
-    if (!starsign && game.settings.get(MODULE_ID, "autoRerollIfMissing")) {
-      await ensureStarsign(actor);
-    }
+  const starsign = actor.getFlag(MODULE_ID, "starsign") ?? "—";
+  
+  console.log(`${MODULE_ID} | renderActorSheet starsign`, starsign)
 
-    const value = actor.getFlag(MODULE_ID, "starsign") ?? "—";
+  // Already added?
+  if (html.find(".detail.starsign").length) return;
 
-    // Avoid duplicate injection
-    if (html.find(`section.${MODULE_ID}-block`).length) return;
+  // Build a PF2e detail block (label above input)
+  const $field = $(`
+    <div class="detail starsign">
+      <span class="details-label">Starsign</span>
+      <h3>
+        <span class="value">${starsign.name}</span>
+        ${game.user.isGM ? `<a class="starsign-reroll" title="Reroll"><i class="fas fa-dice-d20"></i></a>` : ""}
+         <a class="starsign-pick" title="Pick Starsign"><i class="fa-solid fa-list"></i></a>
+      </h3>
+    </div>
+  `);
 
-    const canEdit = game.user.isGM || actor.isOwner;
+  // Find the details grid container shown in your screenshot
+  const $grid = html.find(".tab.character .subsection.details .abcd").first();
+  if (!$grid.length) return; // container not found; bail quietly
 
-    const block = $(`
-      <section class="${MODULE_ID}-block">
-        <div class="starsign-label">Starsign</div>
-        <div class="starsign-value" title="${value}">${escapeHtml(value)}</div>
-        ${game.user.isGM ? `<button type="button" class="starsign-reroll" title="Reroll from '${TABLE_NAME}'">↺</button>` : ""}
-      </section>
-    `);
+  // Place Starsign as a sibling right after Deity (so it sits to the right/below per grid flow)
+  const $deity = $grid.find(".detail.deity").first();
+  if ($deity.length) $deity.after($field);
+  else $grid.append($field); // fallback
 
-    // Insert near the top of the sheet body for visibility, but keep it generic
-    const body = html.find(".sheet-body");
-    if (body.length) body.prepend(block);
-    else html.prepend(block);
-
-    // Wire up reroll (GM only)
-    block.find(".starsign-reroll").on("click", async (event) => {
-      event.preventDefault();
-      if (!game.user.isGM) return ui.notifications.warn("Only a GM can reroll Starsigns.");
-      const table = game.tables?.getName?.(TABLE_NAME);
-      if (!table) return ui.notifications.error(`RollTable not found: ${TABLE_NAME}`);
-      const draw = await table.draw({ displayChat: true });
-      const result = draw?.results?.[0];
-      const text = result?.text ?? result?.document?.text ?? null;
-      if (!text) return;
-      await actor.setFlag(MODULE_ID, "starsign", text.trim());
-      app.render(false);
-    });
-
-    // Context menu: copy/reset
-    block.find(".starsign-value").on("contextmenu", async (event) => {
-      event.preventDefault();
-      const choice = await Dialog.wait({
-        title: "Starsign",
-        content: `
-          <p><strong>${escapeHtml(value)}</strong></p>
-          <p>Choose an action:</p>
-        `,
-        buttons: {
-          copy: {
-            icon: '<i class="fas fa-copy"></i>',
-            label: "Copy to Clipboard",
-            callback: async () => navigator.clipboard?.writeText?.(value)
-          },
-          reset: {
-            icon: '<i class="fas fa-eraser"></i>',
-            label: "Clear",
-            callback: async () => {
-              if (!canEdit) return;
-              await actor.unsetFlag(MODULE_ID, "starsign");
-              app.render(false);
-            }
-          },
-          close: { label: "Close" }
-        },
-        default: "close"
-      });
-      return choice;
-    });
-  } catch (err) {
-    console.error(`${MODULE_ID} | renderActorSheet error`, err);
-  }
+  // GM reroll handler
+  $field.find(".starsign-reroll").on("click", async (ev) => {
+    ev.preventDefault();
+    const table = game.tables?.getName?.(TABLE_NAME);
+    if (!table) return ui.notifications.error(`RollTable not found: ${TABLE_NAME}`);
+    const draw = await table.draw({ displayChat: true });
+    const starsign = draw?.results?.[0];
+    if (!starsign) return;
+    await actor.setFlag(MODULE_ID, "starsign", starsign);
+    $field.find("value").val(starsign.name);
+  });
+  bindStarsignPick(html, actor);
 });
 
 async function ensureStarsign(actor) {
@@ -144,9 +106,94 @@ async function ensureStarsign(actor) {
   if (!table) return;
   const draw = await table.draw({ displayChat: false });
   const result = draw?.results?.[0];
-  const text = result?.text ?? result?.document?.text ?? null;
+  const text = result?.name ?? null;
   if (!text) return;
   await actor.setFlag(MODULE_ID, "starsign", text.trim());
+}
+
+function getStarsignOptions() {
+  const table = game.tables.getName?.(TABLE_NAME);
+  if (!table) return [];
+  // PF2e v13: results are in results.contents; prefer clean text
+  return table.results.contents
+    .map(r => {
+      const raw = r.name ?? r.getChatText?.() ?? "";
+      return foundry.utils.stripHTML?.(raw) ?? raw;
+    })
+    .filter(Boolean);
+}
+
+function getStarsignByName(name) {
+  console.log(`${MODULE_ID} | getStarsignByName name`, name)
+  const table = game.tables.getName?.(TABLE_NAME);
+  if (!table) {
+    console.warn(`RollTable "${TABLE_NAME}" not found.`);
+    return null;
+  }
+
+  // Foundry v13: RollTable.results.contents is an array of TableResult documents
+  for (const result of table.results.contents) {
+    const next = result.name;
+    if (name === next) {
+      console.log(`${MODULE_ID} | getStarsignByName found table entry`, result)
+      return result;
+    }
+  }
+
+  console.warn(`No Starsign named "${name}" found in RollTable "${TABLE_NAME}".`);
+  return null;
+}
+
+/** Show a simple Dialog with a <select> of all Starsigns and set the flag. */
+async function showStarsignPicker(actor) {
+  const options = getStarsignOptions();
+  if (!options.length) {
+    return ui.notifications.warn(`RollTable "${TABLE_NAME}" not found or empty.`);
+  }
+
+  console.log(`${MODULE_ID} | showStarsignPicker options`, options)
+
+  // Build the <select> HTML
+  const opts = options
+    .map(o => `<option value="${foundry.utils.escapeHTML(o)}">${foundry.utils.escapeHTML(o)}</option>`)
+    .join("");
+  const content = `
+    <form class="flexcol">
+      <div class="form-group">
+        <label>Starsign</label>
+        <select name="starsign">${opts}</select>
+      </div>
+    </form>`;
+
+  new Dialog({
+    title: "Pick Starsign",
+    content,
+    buttons: {
+      set: {
+        label: "Set",
+        callback: html => {
+          const value = html.find('[name="starsign"]').val();
+          console.log(`${MODULE_ID} | showStarsignPicker callback value`, value)
+          const starsign = getStarsignByName(value)
+          console.log(`${MODULE_ID} | showStarsignPicker starsign`, starsign)
+          return actor.setFlag(MODULE_ID, "starsign", starsign).then(() => {
+            ui.notifications.info(`Starsign set to ${value}`);
+          });
+        }
+      },
+      cancel: { label: "Cancel" }
+    },
+    default: "set"
+  }).render(true);
+}
+
+/** Wire up the pick button during sheet render (same place you bind reroll). */
+function bindStarsignPick(html, actor) {
+  html.on("click", ".detail.starsign .starsign-pick", ev => {
+    ev.preventDefault();
+    if (!game.user.isGM) return ui.notifications.warn("Only GMs can set the Starsign.");
+    showStarsignPicker(actor);
+  });
 }
 
 function escapeHtml(s = "") {
