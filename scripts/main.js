@@ -8,6 +8,7 @@ Hooks.once("init", function() {
 
 /** Settings */
 Hooks.once("init", () => {
+  console.log("mythborn-starsigns init")
   game.settings.register(MOD_ID, "autoAssign", {
     name: "Auto-assign on character creation",
     hint: "If enabled, new PF2e characters will automatically roll a starsign once.",
@@ -60,6 +61,7 @@ async function findTableByName(name) {
 
 /** Helper: draw one result as plain text */
 async function drawStarsignText(tableName) {
+  console.log("drawStarsignText", tableName)
   const table = await findTableByName(tableName);
   if (!table) {
     ui.notifications?.error?.(`[${MOD_ID}] RollTable "${tableName}" not found.`);
@@ -77,6 +79,7 @@ async function drawStarsignText(tableName) {
 
 /** Assign once on creation (PCs only) */
 Hooks.on("preCreateActor", async (actor, data, options, userId) => {
+  console.log("preCreateActor", actor, data)
   try {
     if (!game.settings.get(MOD_ID, "autoAssign")) return;
     // Only run for character actors (PF2e PCs are type "character")
@@ -103,6 +106,7 @@ Hooks.on("preCreateActor", async (actor, data, options, userId) => {
 
 /** Sheet injection: show a read-only “Starsign” row near the top of PF2e character sheets */
 Hooks.on("renderActorSheet", async (sheet, html) => {
+  console.log("renderActorSheet", sheet)
   try {
     const actor = sheet.actor;
     if (actor?.type !== "character") return;
