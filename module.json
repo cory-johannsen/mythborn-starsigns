@@ -2,10 +2,10 @@
   "id": "mythborn-starsign",
   "title": "Mythborn Starsign (PF2e)",
   "description": "<p>Adds a Starsign field to PF2e PCs and auto-rolls once from a rollable table at character creation.</p>",
-  "version": "11",
+  "version": "13",
   "compatibility": {
-    "minimum": "11",
-    "verified": "12"
+    "minimum": "13",
+    "verified": "13"
   },
   "authors": [
     {
