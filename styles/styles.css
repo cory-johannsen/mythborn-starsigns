@@ -31,6 +31,12 @@
   border: var(--input-border, 1px solid var(--color-border-light-2));
   border-radius: var(--input-radius, 4px);
 }
+.pf2e.sheet.actor.character .detail.starsign .starsign-emblem {
+  width: 64px;
+  max-width: 64px;
+  height: 64px;
+  max-height: 64px;
+}
 
 /* Dice button styled like the search buttons */
 .pf2e.sheet.actor.character .detail.starsign .starsign-reroll {
@@ -65,4 +71,38 @@
 .pf2e.sheet.actor.character .detail.starsign .starsign-pick i {
   font-size: 12px;
   line-height: 1;
+}
+.starsign-tooltip {
+  position: absolute;
+  z-index: 10000;
+  background: var(--color-bg, rgba(0,0,0,0.85));
+  color: var(--color-text-light-0, #fff);
+  border: 1px solid var(--color-border-light-2, rgba(255,255,255,0.2));
+  border-radius: 6px;
+  padding: 6px 8px;
+  max-width: 250px;
+  pointer-events: none;
+  font-size: 0.75rem;
+  display: flex;
+  gap: 6px;
+  align-items: flex-start;
+}
+
+.starsign-tooltip img.starsign-img {
+  width: 40px;
+  height: 40px;
+  border-radius: 4px;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+.starsign-tooltip-text strong {
+  font-weight: 600;
+  color: var(--color-text-light-1, #fff);
+}
+
+.starsign-tooltip-text span {
+  display: block;
+  opacity: 0.9;
+  margin-top: 2px;
 }

@@ -9,28 +9,6 @@
 const MODULE_ID = "mythborn-starsigns";
 const TABLE_NAME = "The Constellations of the Mythborn";
 
-function debugLog(message) {
-  console.log(`${MODULE_ID} | ${message}`)
-}
-
-function debugResult(name, result) {
-  // Handle null/undefined
-  if (!result) return;
-
-  // Use a replacer to avoid circular refs and function clutter
-  const seen = new WeakSet();
-  const safeJson = JSON.stringify(result, (key, value) => {
-    if (typeof value === "function") return "[Function]";
-    if (typeof value === "object" && value !== null) {
-      if (seen.has(value)) return "[Circular]";
-      seen.add(value);
-    }
-    return value;
-  }, 2);
-
-  debugLog(` ${name}: ${safeJson}`)
-}
-
 Hooks.on("createActor", async (actor, options, userId) => {
   try {
     if (actor.type !== "character") return;
@@ -39,7 +17,6 @@ Hooks.on("createActor", async (actor, options, userId) => {
 
     const draw = await table.draw({ displayChat: false });
     const starsign = draw?.results?.[0] ?? null;
-    console.log(`${MODULE_ID} | createActor selecting starsign`, starsign)
     if (!starsign) {
       console.warn(`${MODULE_ID} | No starsign found table result.`);
       return;
@@ -56,47 +33,68 @@ Hooks.on("renderActorSheet", (app, html) => {
   const actor = app.actor;
   if (!actor || actor.type !== "character") return;
 
-  console.log(`${MODULE_ID} | renderActorSheet actor`, actor)
-
   const starsign = actor.getFlag(MODULE_ID, "starsign") ?? "—";
-  
-  console.log(`${MODULE_ID} | renderActorSheet starsign`, starsign)
 
   // Already added?
   if (html.find(".detail.starsign").length) return;
-
+  console.log(`${MODULE_ID} | renderActorSheet`, starsign)
   // Build a PF2e detail block (label above input)
+  // <div class="starsign-emblem"><img src="${starsign.img}"></div>
   const $field = $(`
     <div class="detail starsign">
       <span class="details-label">Starsign</span>
       <h3>
         <span class="value">${starsign.name}</span>
-        ${game.user.isGM ? `<a class="starsign-reroll" title="Reroll"><i class="fas fa-dice-d20"></i></a>` : ""}
-         <a class="starsign-pick" title="Pick Starsign"><i class="fa-solid fa-list"></i></a>
+        ${game.user.isGM ? `<a class="starsign-pick" title="Pick Starsign"><i class="fa-solid fa-fw fa-ellipsis-v"></i></a>` : ""}
       </h3>
     </div>
   `);
+  // === Hover tooltip ===
+  $field.hover(
+    function (event) {
+      // Create tooltip container
+      const $tooltip = $(`
+        <div class="starsign-tooltip">
+          ${starsign.img ? `<img src="${starsign.img}" class="starsign-img" />` : ""}
+          <div class="starsign-tooltip-text">
+            <strong>${starsign.name}</strong><br>
+            <span>${starsign.description ?? ""}</span>
+          </div>
+        </div>
+      `);
 
+      $("body").append($tooltip);
+
+      // Position near cursor
+      const moveTooltip = (ev) => {
+        $tooltip.css({
+          left: ev.pageX + 15,
+          top: ev.pageY + 15
+        });
+      };
+
+      moveTooltip(event);
+      $(document).on("mousemove.starsigntip", moveTooltip);
+
+      // Save ref to tooltip for cleanup
+      $(this).data("starsignTooltip", $tooltip);
+    },
+    function () {
+      // Cleanup on mouseleave
+      const $tooltip = $(this).data("starsignTooltip");
+      if ($tooltip) $tooltip.remove();
+      $(document).off("mousemove.starsigntip");
+    }
+  );
   // Find the details grid container shown in your screenshot
   const $grid = html.find(".tab.character .subsection.details .abcd").first();
   if (!$grid.length) return; // container not found; bail quietly
 
-  // Place Starsign as a sibling right after Deity (so it sits to the right/below per grid flow)
-  const $deity = $grid.find(".detail.deity").first();
+  // Place Starsign as a sibling right after Class (so it sits to the below Background per grid flow)
+  const $deity = $grid.find(".detail.class").first();
   if ($deity.length) $deity.after($field);
   else $grid.append($field); // fallback
 
-  // GM reroll handler
-  $field.find(".starsign-reroll").on("click", async (ev) => {
-    ev.preventDefault();
-    const table = game.tables?.getName?.(TABLE_NAME);
-    if (!table) return ui.notifications.error(`RollTable not found: ${TABLE_NAME}`);
-    const draw = await table.draw({ displayChat: true });
-    const starsign = draw?.results?.[0];
-    if (!starsign) return;
-    await actor.setFlag(MODULE_ID, "starsign", starsign);
-    $field.find("value").val(starsign.name);
-  });
   bindStarsignPick(html, actor);
 });
 
@@ -117,14 +115,13 @@ function getStarsignOptions() {
   // PF2e v13: results are in results.contents; prefer clean text
   return table.results.contents
     .map(r => {
-      const raw = r.name ?? r.getChatText?.() ?? "";
+      const raw = r.name ?? "";
       return foundry.utils.stripHTML?.(raw) ?? raw;
     })
     .filter(Boolean);
 }
 
 function getStarsignByName(name) {
-  console.log(`${MODULE_ID} | getStarsignByName name`, name)
   const table = game.tables.getName?.(TABLE_NAME);
   if (!table) {
     console.warn(`RollTable "${TABLE_NAME}" not found.`);
@@ -135,7 +132,6 @@ function getStarsignByName(name) {
   for (const result of table.results.contents) {
     const next = result.name;
     if (name === next) {
-      console.log(`${MODULE_ID} | getStarsignByName found table entry`, result)
       return result;
     }
   }
@@ -150,8 +146,6 @@ async function showStarsignPicker(actor) {
   if (!options.length) {
     return ui.notifications.warn(`RollTable "${TABLE_NAME}" not found or empty.`);
   }
-
-  console.log(`${MODULE_ID} | showStarsignPicker options`, options)
 
   // Build the <select> HTML
   const opts = options
@@ -173,9 +167,7 @@ async function showStarsignPicker(actor) {
         label: "Set",
         callback: html => {
           const value = html.find('[name="starsign"]').val();
-          console.log(`${MODULE_ID} | showStarsignPicker callback value`, value)
           const starsign = getStarsignByName(value)
-          console.log(`${MODULE_ID} | showStarsignPicker starsign`, starsign)
           return actor.setFlag(MODULE_ID, "starsign", starsign).then(() => {
             ui.notifications.info(`Starsign set to ${value}`);
           });
