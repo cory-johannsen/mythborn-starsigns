@@ -26,7 +26,6 @@
   "bugs": "https://github.com/cory-johannsen/mythborn-starsigns/issues",
   "license": "MIT",
   "manifest": "modules/mythborn-starsign/module.json",
-  "download": "modules/mythborn-starsign/module.zip",
   "flags": {
     "mythborn-starsigns": {
       "schema": 1

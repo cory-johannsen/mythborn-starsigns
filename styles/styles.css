@@ -106,3 +106,30 @@
   opacity: 0.9;
   margin-top: 2px;
 }
+
+/* Clickable starsign value */
+.pf2e.sheet.actor.character .detail.starsign .starsign-clickable {
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-decoration: underline;
+  text-decoration-color: transparent;
+  text-underline-offset: 2px;
+}
+
+.pf2e.sheet.actor.character .detail.starsign .starsign-clickable:hover {
+  text-decoration-color: currentColor;
+  opacity: 0.8;
+}
+
+/* Chat message styling */
+.starsign-announcement {
+  padding: 0.5em;
+}
+
+.starsign-announcement h3 {
+  color: var(--color-text-dark-primary, #191813);
+}
+
+.starsign-announcement h4 {
+  font-weight: 600;
+}

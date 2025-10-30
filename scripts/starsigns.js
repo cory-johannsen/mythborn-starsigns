@@ -44,7 +44,7 @@ Hooks.on("renderActorSheet", (app, html) => {
     <div class="detail starsign">
       <span class="details-label">Starsign</span>
       <h3>
-        <span class="value">${starsign.name}</span>
+        <span class="value starsign-clickable" title="Click to announce Starsign">${starsign.name}</span>
         ${game.user.isGM ? `<a class="starsign-pick" title="Pick Starsign"><i class="fa-solid fa-fw fa-ellipsis-v"></i></a>` : ""}
       </h3>
     </div>
@@ -86,6 +86,13 @@ Hooks.on("renderActorSheet", (app, html) => {
       $(document).off("mousemove.starsigntip");
     }
   );
+
+  // === Click handler for announcing starsign ===
+  $field.find(".starsign-clickable").on("click", (event) => {
+    event.preventDefault();
+    announceStarsign(actor, starsign);
+  });
+
   // Find the details grid container shown in your screenshot
   const $grid = html.find(".tab.character .subsection.details .abcd").first();
   if (!$grid.length) return; // container not found; bail quietly
@@ -97,6 +104,40 @@ Hooks.on("renderActorSheet", (app, html) => {
 
   bindStarsignPick(html, actor);
 });
+
+/** Post a chat message announcing the Starsign activation */
+async function announceStarsign(actor, starsign) {
+  if (!starsign || !starsign.name) {
+    return ui.notifications.warn("No Starsign to announce.");
+  }
+
+  // Build the chat message content with image and description
+  const content = `
+    <div class="starsign-announcement">
+      <h3 style="margin-top: 0; border-bottom: 1px solid rgba(0,0,0,0.1); padding-bottom: 0.5em;">
+        <strong>${actor.name}</strong> activates their Starsign!
+      </h3>
+      <div style="display: flex; gap: 1em; align-items: flex-start;">
+        ${starsign.img ? `<img src="${starsign.img}" style="width: 64px; height: 64px; border-radius: 4px; flex-shrink: 0; border: 1px solid rgba(0,0,0,0.2);" />` : ""}
+        <div style="flex: 1;">
+          <h4 style="margin: 0 0 0.5em 0; color: var(--color-text-dark-primary, #191813);">
+            ${starsign.name}
+          </h4>
+          <p style="margin: 0; font-size: 0.9em;">
+            ${starsign.description || "<em>No description available.</em>"}
+          </p>
+        </div>
+      </div>
+    </div>
+  `;
+
+  await ChatMessage.create({
+    user: game.user.id,
+    speaker: ChatMessage.getSpeaker({ actor }),
+    content: content,
+    type: CONST.CHAT_MESSAGE_TYPES.OTHER
+  });
+}
 
 async function ensureStarsign(actor) {
   if (actor.getFlag(MODULE_ID, "starsign")) return;

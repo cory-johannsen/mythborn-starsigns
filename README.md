@@ -1,5 +1,6 @@
 # Mythborn: Starsigns (PF2e, Foundry v13)
 
+A Foundy VTT module to add custom star signs to Pathfinder 2E
 
 **What it does**
 - Adds a *Starsign* field to PF2e PC sheets
