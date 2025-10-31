@@ -1,0 +1,19 @@
+# Node
+node_modules/
+npm-debug.log
+package-lock.json
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Foundry VTT
+# Note: We DO want to commit the .db file as it's the built compendium
+

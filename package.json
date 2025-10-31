@@ -1,0 +1,22 @@
+{
+  "name": "mythborn-starsigns",
+  "version": "1.0.0",
+  "description": "Foundry VTT module for Pathfinder 2E custom starsigns",
+  "scripts": {
+    "build": "node build-compendium.js",
+    "build:packs": "node build-compendium.js"
+  },
+  "keywords": [
+    "foundry-vtt",
+    "pathfinder-2e",
+    "pf2e",
+    "starsigns"
+  ],
+  "author": "Cory A. Johannsen",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/cory-johannsen/mythborn-starsigns"
+  }
+}
+

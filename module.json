@@ -26,13 +26,10 @@
     {
       "name": "starsign-conditions",
       "label": "Starsign Conditions",
-      "path": "packs/starsign-conditions",
+      "path": "packs/starsign-conditions.db",
       "type": "Item",
       "system": "pf2e",
-      "ownership": {
-        "PLAYER": "LIMITED",
-        "ASSISTANT": "OWNER"
-      }
+      "private": false
     }
   ],
   "url": "https://github.com/cory-johannsen/mythborn-starsigns",

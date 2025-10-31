@@ -177,17 +177,14 @@ async function applyStarsignCondition(actor, starsign) {
     // Get the condition from the compendium
     const pack = game.packs.get(`${MODULE_ID}.starsign-conditions`);
     if (!pack) {
-      console.error(`${MODULE_ID} | Condition compendium not found.`);
-      ui.notifications.error("Starsign condition compendium not found.");
+      console.error(`${MODULE_ID} | Condition compendium not found. Make sure the module is properly installed.`);
+      ui.notifications.error("Starsign condition compendium not found. Please reload Foundry.");
       return;
     }
 
-    // Find the condition in the pack by matching the slug
-    const index = await pack.getIndex();
-    const conditionEntry = index.find(entry => {
-      // We need to get the actual document to check its slug
-      return entry.name === starsign.name;
-    });
+    // Ensure the index is loaded and find the condition by name
+    await pack.getIndex({ fields: ["name", "type", "img"] });
+    const conditionEntry = pack.index.find(entry => entry.name === starsign.name);
 
     if (!conditionEntry) {
       console.warn(`${MODULE_ID} | Condition not found in compendium for: ${starsign.name}`);
