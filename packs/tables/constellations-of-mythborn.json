@@ -1,0 +1,133 @@
+{
+  "_id": "ConstellationTable",
+  "name": "The Constellations of the Mythborn",
+  "img": "icons/sundries/scrolls/scroll-bound-sealed-brown.webp",
+  "description": "<p>Roll on this table to determine a character's starsign at creation. Each starsign represents one of the lost peoples of Thaloré, now immortalized in the stars above.</p>",
+  "results": [
+    {
+      "_id": "Result001WolfTwins",
+      "type": 2,
+      "text": "The Wolf Twins",
+      "img": "modules/mythborn-starsigns/images/The Wolf Twins (Humans).png",
+      "documentCollection": "Item",
+      "documentId": "StarWolfTwins000",
+      "weight": 1,
+      "range": [1, 1],
+      "drawn": false,
+      "flags": {}
+    },
+    {
+      "_id": "Result002StoneFather",
+      "type": 2,
+      "text": "The Stone Father",
+      "img": "modules/mythborn-starsigns/images/The Stone Father (Dwarves).png",
+      "documentCollection": "Item",
+      "documentId": "StarStoneFather0",
+      "weight": 1,
+      "range": [2, 2],
+      "drawn": false,
+      "flags": {}
+    },
+    {
+      "_id": "Result003VerdantCrown",
+      "type": 2,
+      "text": "The Verdant Crown",
+      "img": "modules/mythborn-starsigns/images/The Verdant Crown (Halflings).png",
+      "documentCollection": "Item",
+      "documentId": "StarVerdantCrown",
+      "weight": 1,
+      "range": [3, 3],
+      "drawn": false,
+      "flags": {}
+    },
+    {
+      "_id": "Result004SilentMoon",
+      "type": 2,
+      "text": "The Silent Moon",
+      "img": "modules/mythborn-starsigns/images/The Silent Moon (Gnomes).png",
+      "documentCollection": "Item",
+      "documentId": "StarSilentMoon00",
+      "weight": 1,
+      "range": [4, 4],
+      "drawn": false,
+      "flags": {}
+    },
+    {
+      "_id": "Result005ShadowsEdge",
+      "type": 2,
+      "text": "The Shadow's Edge",
+      "img": "modules/mythborn-starsigns/images/The Shadows Edge (Goblins).png",
+      "documentCollection": "Item",
+      "documentId": "StarShadowsEdge0",
+      "weight": 1,
+      "range": [5, 5],
+      "drawn": false,
+      "flags": {}
+    },
+    {
+      "_id": "Result006Stormbreaker",
+      "type": 2,
+      "text": "The Stormbreaker",
+      "img": "modules/mythborn-starsigns/images/The Stormbreaker (Orcs).png",
+      "documentCollection": "Item",
+      "documentId": "StarStormbreaker",
+      "weight": 1,
+      "range": [6, 6],
+      "drawn": false,
+      "flags": {}
+    },
+    {
+      "_id": "Result007CrystalBloom",
+      "type": 2,
+      "text": "The Crystal Bloom",
+      "img": "modules/mythborn-starsigns/images/The Crystal Bloom (Leshy).png",
+      "documentCollection": "Item",
+      "documentId": "StarCrystalBloom",
+      "weight": 1,
+      "range": [7, 7],
+      "drawn": false,
+      "flags": {}
+    },
+    {
+      "_id": "Result008SeraphicFlame",
+      "type": 2,
+      "text": "The Seraphic Flame",
+      "img": "modules/mythborn-starsigns/images/The Seraphic Flame (Nephilim).png",
+      "documentCollection": "Item",
+      "documentId": "StarSeraphFlame0",
+      "weight": 1,
+      "range": [8, 8],
+      "drawn": false,
+      "flags": {}
+    },
+    {
+      "_id": "Result009WanderingStar",
+      "type": 2,
+      "text": "The Wandering Star",
+      "img": "modules/mythborn-starsigns/images/The Wandering Star (Changelings).png",
+      "documentCollection": "Item",
+      "documentId": "StarWandringStar",
+      "weight": 1,
+      "range": [9, 9],
+      "drawn": false,
+      "flags": {}
+    }
+  ],
+  "formula": "1d9",
+  "replacement": true,
+  "displayRoll": true,
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "coreVersion": "13.0.0",
+    "systemId": "pf2e",
+    "systemVersion": "6.0.0"
+  }
+}
+

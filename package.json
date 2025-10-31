@@ -3,8 +3,10 @@
   "version": "1.0.0",
   "description": "Foundry VTT module for Pathfinder 2E custom starsigns",
   "scripts": {
-    "build": "node build-compendium.js",
-    "build:packs": "node build-compendium.js"
+    "build": "node build-compendium.js && node build-tables.js",
+    "build:packs": "node build-compendium.js && node build-tables.js",
+    "build:effects": "node build-compendium.js",
+    "build:tables": "node build-tables.js"
   },
   "keywords": [
     "foundry-vtt",

@@ -9,10 +9,75 @@
 const MODULE_ID = "mythborn-starsigns";
 const TABLE_NAME = "The Constellations of the Mythborn";
 
+// Cache the table once loaded
+let cachedTable = null;
+
+/**
+ * Get the starsign roll table from compendium or world
+ * Prioritizes compendium table, falls back to world table
+ */
+async function getStarsignTable() {
+  // Return cached table if available
+  if (cachedTable) return cachedTable;
+
+  // First try to get from compendium
+  const pack = game.packs.get(`${MODULE_ID}.starsign-tables`);
+  if (pack) {
+    try {
+      await pack.getIndex({ fields: ["name"] });
+      const tableEntry = pack.index.find(entry => entry.name === TABLE_NAME);
+      if (tableEntry) {
+        const table = await pack.getDocument(tableEntry._id);
+        if (table) {
+          console.log(`${MODULE_ID} | Using compendium roll table`);
+          cachedTable = table;
+          return table;
+        }
+      }
+    } catch (error) {
+      console.warn(`${MODULE_ID} | Could not load compendium table:`, error);
+    }
+  }
+
+  // Fallback to world table
+  const worldTable = game.tables?.getName?.(TABLE_NAME);
+  if (worldTable) {
+    console.log(`${MODULE_ID} | Using world roll table`);
+    cachedTable = worldTable;
+    return worldTable;
+  }
+
+  console.warn(`${MODULE_ID} | No starsign table found in compendium or world`);
+  return null;
+}
+
+/**
+ * Get table synchronously (uses cached table or world table)
+ */
+function getStarsignTableSync() {
+  // Try cached first
+  if (cachedTable) return cachedTable;
+  
+  // Fallback to world table
+  const worldTable = game.tables?.getName?.(TABLE_NAME);
+  if (worldTable) {
+    cachedTable = worldTable;
+    return worldTable;
+  }
+  
+  return null;
+}
+
+// Preload the table on ready
+Hooks.once("ready", async () => {
+  console.log(`${MODULE_ID} | Module ready, preloading starsign table...`);
+  await getStarsignTable();
+});
+
 Hooks.on("createActor", async (actor, options, userId) => {
   try {
     if (actor.type !== "character") return;
-    const table = game.tables?.getName?.(TABLE_NAME);
+    const table = await getStarsignTable();
     if (!table) return;
 
     const draw = await table.draw({ displayChat: false });
@@ -183,14 +248,11 @@ async function announceStarsign(actor, starsign) {
   const content = `
     <div class="starsign-announcement">
       <h3 style="margin-top: 0; border-bottom: 1px solid rgba(0,0,0,0.1); padding-bottom: 0.5em;">
-        <strong>${actor.name}</strong> activates their Starsign!
+        <strong>${actor.name}</strong> activates ${starsign.name}!
       </h3>
       <div style="display: flex; gap: 1em; align-items: flex-start;">
         ${starsign.img ? `<img src="${starsign.img}" style="width: 64px; height: 64px; border-radius: 4px; flex-shrink: 0; border: 1px solid rgba(0,0,0,0.2);" />` : ""}
         <div style="flex: 1;">
-          <h4 style="margin: 0 0 0.5em 0; color: var(--color-text-dark-primary, #191813);">
-            ${starsign.name}
-          </h4>
           <p style="margin: 0; font-size: 0.9em;">
             ${starsign.description || "<em>No description available.</em>"}
           </p>
@@ -264,7 +326,7 @@ async function applyStarsignEffect(actor, starsign) {
 
 async function ensureStarsign(actor) {
   if (actor.getFlag(MODULE_ID, "starsign")) return;
-  const table = game.tables?.getName?.(TABLE_NAME);
+  const table = await getStarsignTable();
   if (!table) return;
   const draw = await table.draw({ displayChat: false });
   const result = draw?.results?.[0];
@@ -274,7 +336,7 @@ async function ensureStarsign(actor) {
 }
 
 function getStarsignOptions() {
-  const table = game.tables.getName?.(TABLE_NAME);
+  const table = getStarsignTableSync();
   if (!table) return [];
   // PF2e v13: results are in results.contents; prefer clean text
   return table.results.contents
@@ -286,7 +348,7 @@ function getStarsignOptions() {
 }
 
 function getStarsignByName(name) {
-  const table = game.tables.getName?.(TABLE_NAME);
+  const table = getStarsignTableSync();
   if (!table) {
     console.warn(`RollTable "${TABLE_NAME}" not found.`);
     return null;

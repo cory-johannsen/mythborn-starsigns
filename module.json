@@ -30,6 +30,14 @@
       "type": "Item",
       "system": "pf2e",
       "private": false
+    },
+    {
+      "name": "starsign-tables",
+      "label": "Starsign Roll Tables",
+      "path": "packs/starsign-tables.db",
+      "type": "RollTable",
+      "system": "pf2e",
+      "private": false
     }
   ],
   "url": "https://github.com/cory-johannsen/mythborn-starsigns",
