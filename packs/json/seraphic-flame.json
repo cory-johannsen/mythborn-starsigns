@@ -1,32 +1,30 @@
 {
   "_id": "StarSeraphFlame0",
   "name": "The Seraphic Flame",
-  "type": "condition",
+  "type": "effect",
   "img": "modules/mythborn-starsigns/images/The Seraphic Flame (Nephilim).png",
   "system": {
     "slug": "starsign-seraphic-flame",
     "description": {
       "value": "<p><strong>Myth:</strong> Born from light that fell upon dew, the Seraphic Flame sought to illuminate every shadow. When the stars wept, they rose into the sky to tend the wounds of the world.</p><p><strong>Aspect: Radiant Soul.</strong> You shed a faint aura when channeling divine or primal magic; once per day, gain +1 to a saving throw against evil or corruption.</p>"
     },
-    "group": null,
-    "value": {
-      "isValued": false,
-      "value": null
+    "duration": {
+      "value": -1,
+      "unit": "unlimited",
+      "sustained": false,
+      "expiry": "turn-start"
     },
-    "duration": null,
-    "persistent": false,
-    "active": true,
-    "removable": true,
-    "references": {
-      "parent": {
-        "id": "",
-        "type": ""
-      },
-      "children": [],
-      "overrides": [],
-      "overriddenBy": []
+    "tokenIcon": {
+      "show": true
     },
-    "overrides": []
+    "badge": null,
+    "level": {
+      "value": 1
+    },
+    "traits": {
+      "value": [],
+      "rarity": "common"
+    }
   },
   "effects": [],
   "folder": null,

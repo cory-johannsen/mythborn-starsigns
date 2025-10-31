@@ -9,9 +9,9 @@ const fs = require('fs');
 const path = require('path');
 
 const SOURCE_DIR = path.join(__dirname, 'packs', 'json');
-const OUTPUT_FILE = path.join(__dirname, 'packs', 'starsign-conditions.db');
+const OUTPUT_FILE = path.join(__dirname, 'packs', 'starsign-effects.db');
 
-console.log('🔨 Building Starsign Conditions Compendium...\n');
+console.log('🔨 Building Starsign Effects Compendium...\n');
 
 try {
   // Ensure source directory exists

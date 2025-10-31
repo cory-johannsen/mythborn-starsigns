@@ -1,32 +1,30 @@
 {
   "_id": "StarWandringStar",
   "name": "The Wandering Star",
-  "type": "condition",
+  "type": "effect",
   "img": "modules/mythborn-starsigns/images/The Wandering Star (Changelings).png",
   "system": {
     "slug": "starsign-wandering-star",
     "description": {
       "value": "<p><strong>Myth:</strong> They danced through the boughs changing shape to match the moon. When the gods tried to bind them, they slipped their forms entirely, becoming a comet that still refuses to stay still.</p><p><strong>Aspect: Shifting Face.</strong> Once per day, subtly alter your appearance (change eye or hair color, tone, scent, etc.) for 1 hour.</p>"
     },
-    "group": null,
-    "value": {
-      "isValued": false,
-      "value": null
+    "duration": {
+      "value": -1,
+      "unit": "unlimited",
+      "sustained": false,
+      "expiry": "turn-start"
     },
-    "duration": null,
-    "persistent": false,
-    "active": true,
-    "removable": true,
-    "references": {
-      "parent": {
-        "id": "",
-        "type": ""
-      },
-      "children": [],
-      "overrides": [],
-      "overriddenBy": []
+    "tokenIcon": {
+      "show": true
     },
-    "overrides": []
+    "badge": null,
+    "level": {
+      "value": 1
+    },
+    "traits": {
+      "value": [],
+      "rarity": "common"
+    }
   },
   "effects": [],
   "folder": null,

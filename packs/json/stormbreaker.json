@@ -1,32 +1,30 @@
 {
   "_id": "StarStormbreaker",
   "name": "The Stormbreaker",
-  "type": "condition",
+  "type": "effect",
   "img": "modules/mythborn-starsigns/images/The Stormbreaker (Orcs).png",
   "system": {
     "slug": "starsign-stormbreaker",
     "description": {
       "value": "<p><strong>Myth:</strong> The Stormbreaker challenged the heavens themselves, roaring until lightning split the sky. The gods struck him down — but his defiance lit the stormclouds forever.</p><p><strong>Aspect: Thundering Heart.</strong> Once per day, after reducing an enemy to 0 HP, gain temporary HP equal to your Constitution modifier.</p>"
     },
-    "group": null,
-    "value": {
-      "isValued": false,
-      "value": null
+    "duration": {
+      "value": -1,
+      "unit": "unlimited",
+      "sustained": false,
+      "expiry": "turn-start"
     },
-    "duration": null,
-    "persistent": false,
-    "active": true,
-    "removable": true,
-    "references": {
-      "parent": {
-        "id": "",
-        "type": ""
-      },
-      "children": [],
-      "overrides": [],
-      "overriddenBy": []
+    "tokenIcon": {
+      "show": true
     },
-    "overrides": []
+    "badge": null,
+    "level": {
+      "value": 1
+    },
+    "traits": {
+      "value": [],
+      "rarity": "common"
+    }
   },
   "effects": [],
   "folder": null,

@@ -24,9 +24,9 @@
   ],
   "packs": [
     {
-      "name": "starsign-conditions",
-      "label": "Starsign Conditions",
-      "path": "packs/starsign-conditions.db",
+      "name": "starsign-effects",
+      "label": "Starsign Effects",
+      "path": "packs/starsign-effects.db",
       "type": "Item",
       "system": "pf2e",
       "private": false

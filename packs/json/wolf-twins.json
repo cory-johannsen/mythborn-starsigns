@@ -1,32 +1,30 @@
 {
   "_id": "StarWolfTwins000",
   "name": "The Wolf Twins",
-  "type": "condition",
+  "type": "effect",
   "img": "modules/mythborn-starsigns/images/The Wolf Twins (Humans).png",
   "system": {
     "slug": "starsign-wolf-twins",
     "description": {
       "value": "<p><strong>Myth:</strong> The Twins were said to be the first wanderers of the branches — curious, bold, never still. They built bridges where others saw chasms, and sang songs to the stars until the stars sang back. When they vanished, they left behind the gift of adaptability — the courage to be anyone, anywhere.</p><p><strong>Aspect: Versatile Soul.</strong> Once per day, gain a +1 circumstance bonus to any skill check you've never trained before, representing human adaptability.</p>"
     },
-    "group": null,
-    "value": {
-      "isValued": false,
-      "value": null
+    "duration": {
+      "value": -1,
+      "unit": "unlimited",
+      "sustained": false,
+      "expiry": "turn-start"
     },
-    "duration": null,
-    "persistent": false,
-    "active": true,
-    "removable": true,
-    "references": {
-      "parent": {
-        "id": "",
-        "type": ""
-      },
-      "children": [],
-      "overrides": [],
-      "overriddenBy": []
+    "tokenIcon": {
+      "show": true
     },
-    "overrides": []
+    "badge": null,
+    "level": {
+      "value": 1
+    },
+    "traits": {
+      "value": [],
+      "rarity": "common"
+    }
   },
   "effects": [],
   "folder": null,

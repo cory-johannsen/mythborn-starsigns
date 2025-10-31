@@ -105,7 +105,7 @@ Hooks.on("renderActorSheet", (app, html) => {
   bindStarsignPick(html, actor);
 });
 
-/** Map starsign names to condition slugs */
+/** Map starsign names to effect slugs */
 function getConditionSlugForStarsign(starsignName) {
   const mapping = {
     "The Wolf Twins": "starsign-wolf-twins",
@@ -121,7 +121,7 @@ function getConditionSlugForStarsign(starsignName) {
   return mapping[starsignName] || null;
 }
 
-/** Post a chat message announcing the Starsign activation and apply condition */
+/** Post a chat message announcing the Starsign activation and apply effect */
 async function announceStarsign(actor, starsign) {
   if (!starsign || !starsign.name) {
     return ui.notifications.warn("No Starsign to announce.");
@@ -154,59 +154,59 @@ async function announceStarsign(actor, starsign) {
     type: CONST.CHAT_MESSAGE_TYPES.OTHER
   });
 
-  // Apply the corresponding condition to the actor
-  await applyStarsignCondition(actor, starsign);
+  // Apply the corresponding effect to the actor
+  await applyStarsignEffect(actor, starsign);
 }
 
-/** Apply the starsign condition to the actor */
-async function applyStarsignCondition(actor, starsign) {
+/** Apply the starsign effect to the actor */
+async function applyStarsignEffect(actor, starsign) {
   try {
-    const conditionSlug = getConditionSlugForStarsign(starsign.name);
-    if (!conditionSlug) {
-      console.warn(`${MODULE_ID} | No condition slug found for starsign: ${starsign.name}`);
+    const effectSlug = getConditionSlugForStarsign(starsign.name);
+    if (!effectSlug) {
+      console.warn(`${MODULE_ID} | No effect slug found for starsign: ${starsign.name}`);
       return;
     }
 
-    // Check if the actor already has this condition
-    const existingCondition = actor.itemTypes.condition?.find(c => c.slug === conditionSlug);
-    if (existingCondition) {
-      ui.notifications.info(`${starsign.name} condition is already active.`);
+    // Check if the actor already has this effect
+    const existingEffect = actor.itemTypes.effect?.find(c => c.slug === effectSlug);
+    if (existingEffect) {
+      ui.notifications.info(`${starsign.name} effect is already active.`);
       return;
     }
 
-    // Get the condition from the compendium
-    const pack = game.packs.get(`${MODULE_ID}.starsign-conditions`);
+    // Get the effect from the compendium
+    const pack = game.packs.get(`${MODULE_ID}.starsign-effects`);
     if (!pack) {
-      console.error(`${MODULE_ID} | Condition compendium not found. Make sure the module is properly installed.`);
-      ui.notifications.error("Starsign condition compendium not found. Please reload Foundry.");
+      console.error(`${MODULE_ID} | Effect compendium not found. Make sure the module is properly installed.`);
+      ui.notifications.error("Starsign effect compendium not found. Please reload Foundry.");
       return;
     }
 
-    // Ensure the index is loaded and find the condition by name
+    // Ensure the index is loaded and find the effect by name
     await pack.getIndex({ fields: ["name", "type", "img"] });
-    const conditionEntry = pack.index.find(entry => entry.name === starsign.name);
+    const effectEntry = pack.index.find(entry => entry.name === starsign.name);
 
-    if (!conditionEntry) {
-      console.warn(`${MODULE_ID} | Condition not found in compendium for: ${starsign.name}`);
-      ui.notifications.warn(`Condition for ${starsign.name} not found in compendium.`);
+    if (!effectEntry) {
+      console.warn(`${MODULE_ID} | Effect not found in compendium for: ${starsign.name}`);
+      ui.notifications.warn(`Effect for ${starsign.name} not found in compendium.`);
       return;
     }
 
-    // Get the full condition document
-    const conditionDoc = await pack.getDocument(conditionEntry._id);
-    if (!conditionDoc) {
-      console.error(`${MODULE_ID} | Failed to load condition document for: ${starsign.name}`);
+    // Get the full effect document
+    const effectDoc = await pack.getDocument(effectEntry._id);
+    if (!effectDoc) {
+      console.error(`${MODULE_ID} | Failed to load effect document for: ${starsign.name}`);
       return;
     }
 
-    // Create the condition on the actor
-    const conditionData = conditionDoc.toObject();
-    await actor.createEmbeddedDocuments("Item", [conditionData]);
-    
-    ui.notifications.info(`${starsign.name} condition applied to ${actor.name}.`);
+    // Create the effect on the actor
+    const effectData = effectDoc.toObject();
+    await actor.createEmbeddedDocuments("Item", [effectData]);
+
+    ui.notifications.info(`${starsign.name} effect applied to ${actor.name}.`);
   } catch (error) {
-    console.error(`${MODULE_ID} | Error applying condition:`, error);
-    ui.notifications.error("Failed to apply starsign condition.");
+    console.error(`${MODULE_ID} | Error applying effect:`, error);
+    ui.notifications.error("Failed to apply starsign effect.");
   }
 }
 

@@ -1,32 +1,30 @@
 {
   "_id": "StarShadowsEdge0",
   "name": "The Shadow's Edge",
-  "type": "condition",
+  "type": "effect",
   "img": "modules/mythborn-starsigns/images/The Shadows Edge (Goblins).png",
   "system": {
     "slug": "starsign-shadows-edge",
     "description": {
       "value": "<p><strong>Myth:</strong> The Goblins burned brighter than any fire they found. Their rebellion against fear itself was so fierce that it burned them out of existence — and lit the stars with their laughter.</p><p><strong>Aspect: Fearless Flame.</strong> Once per day, you can roll twice to resist the Frightened condition or any fear effect.</p>"
     },
-    "group": null,
-    "value": {
-      "isValued": false,
-      "value": null
+    "duration": {
+      "value": -1,
+      "unit": "unlimited",
+      "sustained": false,
+      "expiry": "turn-start"
     },
-    "duration": null,
-    "persistent": false,
-    "active": true,
-    "removable": true,
-    "references": {
-      "parent": {
-        "id": "",
-        "type": ""
-      },
-      "children": [],
-      "overrides": [],
-      "overriddenBy": []
+    "tokenIcon": {
+      "show": true
     },
-    "overrides": []
+    "badge": null,
+    "level": {
+      "value": 1
+    },
+    "traits": {
+      "value": [],
+      "rarity": "common"
+    }
   },
   "effects": [],
   "folder": null,
