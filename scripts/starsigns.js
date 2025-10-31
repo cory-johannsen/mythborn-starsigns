@@ -44,14 +44,49 @@ Hooks.on("renderActorSheet", (app, html) => {
     <div class="detail starsign">
       <span class="details-label">Starsign</span>
       <h3>
-        <span class="value starsign-clickable" title="Click to announce Starsign">${starsign.name}</span>
+        <span class="value starsign-clickable">${starsign.name}</span>
         ${game.user.isGM ? `<a class="starsign-pick" title="Pick Starsign"><i class="fa-solid fa-fw fa-ellipsis-v"></i></a>` : ""}
       </h3>
     </div>
   `);
   // === Hover tooltip ===
   $field.hover(
-    function (event) {
+    async function (event) {
+      // Fetch the full effect from compendium to get rules
+      const pack = game.packs.get(`${MODULE_ID}.starsign-effects`);
+      let effectRulesHtml = "";
+      
+      if (pack) {
+        try {
+          await pack.getIndex({ fields: ["name", "type"] });
+          const effectEntry = pack.index.find(entry => entry.name === starsign.name);
+          
+          if (effectEntry) {
+            const effectDoc = await pack.getDocument(effectEntry._id);
+            const rules = effectDoc?.system?.rules;
+            
+            if (rules && rules.length > 0) {
+              effectRulesHtml = '<div class="starsign-aspect"><strong>Aspect:</strong><ul>';
+              
+              for (const rule of rules) {
+                if (rule.key === "FlatModifier") {
+                  const bonus = rule.value > 0 ? `+${rule.value}` : rule.value;
+                  effectRulesHtml += `<li>${bonus} ${rule.type} bonus to ${rule.selector.replace(/-/g, ' ')}</li>`;
+                } else if (rule.key === "Note") {
+                  effectRulesHtml += `<li>${rule.title}: ${rule.text}</li>`;
+                } else if (rule.key === "RollOption") {
+                  effectRulesHtml += `<li>${rule.label}</li>`;
+                }
+              }
+              
+              effectRulesHtml += '</ul></div>';
+            }
+          }
+        } catch (error) {
+          console.warn(`${MODULE_ID} | Could not load starsign effect rules:`, error);
+        }
+      }
+
       // Create tooltip container
       const $tooltip = $(`
         <div class="starsign-tooltip">
@@ -59,6 +94,7 @@ Hooks.on("renderActorSheet", (app, html) => {
           <div class="starsign-tooltip-text">
             <strong>${starsign.name}</strong><br>
             <span>${starsign.description ?? ""}</span>
+            ${effectRulesHtml}
           </div>
         </div>
       `);
