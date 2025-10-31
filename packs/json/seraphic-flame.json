@@ -6,7 +6,7 @@
   "system": {
     "slug": "starsign-seraphic-flame",
     "description": {
-      "value": "<p><strong>Myth:</strong> Born from light that fell upon dew, the Seraphic Flame sought to illuminate every shadow. When the stars wept, they rose into the sky to tend the wounds of the world.</p><p><strong>Aspect: Radiant Soul.</strong> You shed a faint aura when channeling divine or primal magic; once per day, gain +1 to a saving throw against evil or corruption.</p>"
+      "value": "<p><strong>Myth:</strong> Born from light that fell upon dew, the Seraphic Flame sought to illuminate every shadow. When the stars wept, they rose into the sky to tend the wounds of the world.</p>"
     },
     "duration": {
       "value": -1,
@@ -24,7 +24,24 @@
     "traits": {
       "value": [],
       "rarity": "common"
-    }
+    },
+    "rules": [
+      {
+        "key": "RollOption",
+        "domain": "saving-throw",
+        "option": "radiant-soul",
+        "toggleable": true,
+        "label": "Radiant Soul (Once per day)"
+      },
+      {
+        "key": "FlatModifier",
+        "selector": "saving-throw",
+        "type": "circumstance",
+        "value": 1,
+        "predicate": ["radiant-soul"],
+        "label": "Radiant Soul (vs evil/corruption)"
+      }
+    ]
   },
   "effects": [],
   "folder": null,

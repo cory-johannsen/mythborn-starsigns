@@ -6,7 +6,7 @@
   "system": {
     "slug": "starsign-silent-moon",
     "description": {
-      "value": "<p><strong>Myth:</strong> The Gnomes were dreamers who listened to the murmurs of growing things. They vanished after following the whispers of the moon into its reflection, and there they remain, chasing endless wonder.</p><p><strong>Aspect: Whimsy's Whisper.</strong> Gain a +1 circumstance bonus to any Occultism or Nature check involving magical phenomena.</p>"
+      "value": "<p><strong>Myth:</strong> The Gnomes were dreamers who listened to the murmurs of growing things. They vanished after following the whispers of the moon into its reflection, and there they remain, chasing endless wonder.</p>"
     },
     "duration": {
       "value": -1,
@@ -24,7 +24,23 @@
     "traits": {
       "value": [],
       "rarity": "common"
-    }
+    },
+    "rules": [
+      {
+        "key": "FlatModifier",
+        "selector": "occultism",
+        "type": "circumstance",
+        "value": 1,
+        "label": "Whimsy's Whisper (magical phenomena)"
+      },
+      {
+        "key": "FlatModifier",
+        "selector": "nature",
+        "type": "circumstance",
+        "value": 1,
+        "label": "Whimsy's Whisper (magical phenomena)"
+      }
+    ]
   },
   "effects": [],
   "folder": null,

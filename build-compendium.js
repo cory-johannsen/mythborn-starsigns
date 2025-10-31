@@ -30,7 +30,7 @@ try {
     process.exit(1);
   }
 
-  console.log(`📂 Found ${jsonFiles.length} condition file(s):`);
+  console.log(`📂 Found ${jsonFiles.length} effect file(s):`);
   jsonFiles.forEach(file => console.log(`   - ${file}`));
   console.log();
 
@@ -59,8 +59,8 @@ try {
         console.error(`❌ Error: Missing name in ${file}`);
         process.exit(1);
       }
-      if (json.type !== 'condition') {
-        console.error(`❌ Error: Invalid type "${json.type}" in ${file} (expected "condition")`);
+      if (json.type !== 'effect') {
+        console.error(`❌ Error: Invalid type "${json.type}" in ${file} (expected "effect")`);
         process.exit(1);
       }
       
@@ -80,7 +80,7 @@ try {
 
   console.log(`\n✨ Successfully built compendium!`);
   console.log(`📄 Output: ${OUTPUT_FILE}`);
-  console.log(`📊 Total conditions: ${lines.length}\n`);
+  console.log(`📊 Total effects: ${lines.length}\n`);
 
 } catch (error) {
   console.error('❌ Build failed:', error.message);

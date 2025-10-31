@@ -6,7 +6,7 @@
   "system": {
     "slug": "starsign-wolf-twins",
     "description": {
-      "value": "<p><strong>Myth:</strong> The Twins were said to be the first wanderers of the branches — curious, bold, never still. They built bridges where others saw chasms, and sang songs to the stars until the stars sang back. When they vanished, they left behind the gift of adaptability — the courage to be anyone, anywhere.</p><p><strong>Aspect: Versatile Soul.</strong> Once per day, gain a +1 circumstance bonus to any skill check you've never trained before, representing human adaptability.</p>"
+      "value": "<p><strong>Myth:</strong> The Twins were said to be the first wanderers of the branches — curious, bold, never still. They built bridges where others saw chasms, and sang songs to the stars until the stars sang back. When they vanished, they left behind the gift of adaptability — the courage to be anyone, anywhere.</p>"
     },
     "duration": {
       "value": -1,
@@ -24,7 +24,24 @@
     "traits": {
       "value": [],
       "rarity": "common"
-    }
+    },
+    "rules": [
+      {
+        "key": "RollOption",
+        "domain": "skill-check",
+        "option": "versatile-soul",
+        "toggleable": true,
+        "label": "Versatile Soul (Once per day)"
+      },
+      {
+        "key": "FlatModifier",
+        "selector": "skill-check",
+        "type": "circumstance",
+        "value": 1,
+        "predicate": ["versatile-soul", "self:untrained"],
+        "label": "Versatile Soul"
+      }
+    ]
   },
   "effects": [],
   "folder": null,

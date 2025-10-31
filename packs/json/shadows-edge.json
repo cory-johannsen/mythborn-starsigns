@@ -6,7 +6,7 @@
   "system": {
     "slug": "starsign-shadows-edge",
     "description": {
-      "value": "<p><strong>Myth:</strong> The Goblins burned brighter than any fire they found. Their rebellion against fear itself was so fierce that it burned them out of existence — and lit the stars with their laughter.</p><p><strong>Aspect: Fearless Flame.</strong> Once per day, you can roll twice to resist the Frightened condition or any fear effect.</p>"
+      "value": "<p><strong>Myth:</strong> The Goblins burned brighter than any fire they found. Their rebellion against fear itself was so fierce that it burned them out of existence — and lit the stars with their laughter.</p>"
     },
     "duration": {
       "value": -1,
@@ -24,7 +24,23 @@
     "traits": {
       "value": [],
       "rarity": "common"
-    }
+    },
+    "rules": [
+      {
+        "key": "RollOption",
+        "domain": "saving-throw",
+        "option": "fearless-flame",
+        "toggleable": true,
+        "label": "Fearless Flame (Once per day)"
+      },
+      {
+        "key": "Note",
+        "selector": "saving-throw",
+        "title": "Fearless Flame",
+        "text": "When this option is active, roll twice to resist the Frightened condition or any fear effect and take the better result.",
+        "predicate": ["fearless-flame"]
+      }
+    ]
   },
   "effects": [],
   "folder": null,

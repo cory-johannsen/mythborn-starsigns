@@ -6,7 +6,7 @@
   "system": {
     "slug": "starsign-crystal-bloom",
     "description": {
-      "value": "<p><strong>Myth:</strong> They grew from the tears of Thaloré herself, each petal a memory of those she'd lost. When the Tree healed, they offered themselves back to her as blossoms in the night sky.</p><p><strong>Aspect: Bloom's Grace.</strong> You can cause minor plant growth in a 10-foot radius once per day, or gain +1 to Medicine checks involving natural remedies.</p>"
+      "value": "<p><strong>Myth:</strong> They grew from the tears of Thaloré herself, each petal a memory of those she'd lost. When the Tree healed, they offered themselves back to her as blossoms in the night sky.</p>"
     },
     "duration": {
       "value": -1,
@@ -24,7 +24,22 @@
     "traits": {
       "value": [],
       "rarity": "common"
-    }
+    },
+    "rules": [
+      {
+        "key": "FlatModifier",
+        "selector": "medicine",
+        "type": "circumstance",
+        "value": 1,
+        "label": "Bloom's Grace (natural remedies)"
+      },
+      {
+        "key": "Note",
+        "selector": "all",
+        "title": "Bloom's Grace",
+        "text": "Once per day, you can cause minor plant growth in a 10-foot radius."
+      }
+    ]
   },
   "effects": [],
   "folder": null,

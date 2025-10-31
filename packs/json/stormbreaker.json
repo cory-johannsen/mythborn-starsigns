@@ -6,7 +6,7 @@
   "system": {
     "slug": "starsign-stormbreaker",
     "description": {
-      "value": "<p><strong>Myth:</strong> The Stormbreaker challenged the heavens themselves, roaring until lightning split the sky. The gods struck him down — but his defiance lit the stormclouds forever.</p><p><strong>Aspect: Thundering Heart.</strong> Once per day, after reducing an enemy to 0 HP, gain temporary HP equal to your Constitution modifier.</p>"
+      "value": "<p><strong>Myth:</strong> The Stormbreaker challenged the heavens themselves, roaring until lightning split the sky. The gods struck him down — but his defiance lit the stormclouds forever.</p>"
     },
     "duration": {
       "value": -1,
@@ -24,7 +24,15 @@
     "traits": {
       "value": [],
       "rarity": "common"
-    }
+    },
+    "rules": [
+      {
+        "key": "Note",
+        "selector": "strike-damage",
+        "title": "Thundering Heart",
+        "text": "Once per day, after reducing an enemy to 0 HP, gain temporary HP equal to your Constitution modifier."
+      }
+    ]
   },
   "effects": [],
   "folder": null,
