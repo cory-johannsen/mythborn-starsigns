@@ -15,6 +15,7 @@
     }
   ],
   "esmodules": [
+    "scripts/starsign-badge.js",
     "scripts/starsigns.js"
   ],
   "styles": [

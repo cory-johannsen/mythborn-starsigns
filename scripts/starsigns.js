@@ -423,3 +423,58 @@ function escapeHtml(s = "") {
     "'": "&#39;"
   })[c]);
 }
+
+// ═══════════════════════════════════════════════════════════════════════════
+// BADGE INTERACTION HOOKS
+// ═══════════════════════════════════════════════════════════════════════════
+
+/**
+ * Hook: renderTokenHUD
+ * Add click handlers to starsign effect badges on tokens
+ */
+Hooks.on("renderTokenHUD", (app, html, data) => {
+  const token = canvas.tokens.get(data._id);
+  if (!token?.actor) return;
+  
+  // Find starsign effect
+  const starsignEffect = token.actor.itemTypes.effect?.find(
+    e => e.slug?.startsWith("starsign-")
+  );
+  
+  if (!starsignEffect) return;
+  
+  const badgeValue = starsignEffect.system.badge?.value ?? 0;
+  if (badgeValue <= 0) return;
+  
+  // Find the effect icon in the HUD and add click handler
+  const iconElement = html.find(`[data-item-id="${starsignEffect.id}"]`);
+  if (iconElement.length) {
+    iconElement.css("cursor", "pointer");
+    iconElement.on("click", async (event) => {
+      event.preventDefault();
+      event.stopPropagation();
+      
+      // Use the badge management function if available
+      if (window.StarsignBadge?.decrementUse) {
+        await window.StarsignBadge.decrementUse(token.actor, starsignEffect);
+      } else {
+        console.error(`${MODULE_ID} | Badge management module not loaded`);
+      }
+    });
+  }
+});
+
+/**
+ * Hook: pf2e.restForTheNight
+ * Reset starsign uses after a long rest
+ */
+Hooks.on("pf2e.restForTheNight", async (actor) => {
+  if (!actor || actor.type !== "character") return;
+  
+  // Use the badge management function if available
+  if (window.StarsignBadge?.resetDailyUses) {
+    await window.StarsignBadge.resetDailyUses(actor);
+  } else {
+    console.error(`${MODULE_ID} | Badge management module not loaded`);
+  }
+});

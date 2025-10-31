@@ -159,3 +159,43 @@
 .starsign-announcement h4 {
   font-weight: 600;
 }
+
+.starsign-activation {
+  padding: 0.5em;
+}
+
+.starsign-activation p {
+  margin: 0;
+  font-size: 0.95em;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   STARSIGN BADGE STYLING (Token Effect Icons)
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* Style starsign effect badges to be visually distinct */
+.effect-control[data-slug^="starsign-"] {
+  border: 2px solid rgba(255, 215, 0, 0.6);
+  box-shadow: 0 0 8px rgba(255, 215, 0, 0.4);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  position: relative;
+}
+
+.effect-control[data-slug^="starsign-"]:hover {
+  border-color: rgba(255, 215, 0, 0.9);
+  box-shadow: 0 0 12px rgba(255, 215, 0, 0.6);
+  transform: scale(1.05);
+}
+
+.effect-control[data-slug^="starsign-"]:active {
+  transform: scale(0.95);
+}
+
+/* Badge counter styling for starsigns */
+.effect-control[data-slug^="starsign-"] .badge {
+  background: rgba(255, 215, 0, 0.9);
+  color: #000;
+  font-weight: bold;
+  border: 1px solid rgba(0, 0, 0, 0.3);
+}
