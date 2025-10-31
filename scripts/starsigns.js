@@ -88,8 +88,17 @@ Hooks.on("renderActorSheet", (app, html) => {
   );
 
   // === Click handler for announcing starsign ===
-  $field.find(".starsign-clickable").on("click", (event) => {
+  $field.find(".starsign-clickable").on("click", function(event) {
     event.preventDefault();
+    
+    // Clean up tooltip if it's visible
+    const $tooltip = $(this).data("starsignTooltip");
+    if ($tooltip) {
+      $tooltip.remove();
+      $(document).off("mousemove.starsigntip");
+      $(this).removeData("starsignTooltip");
+    }
+    
     announceStarsign(actor, starsign);
   });
 
@@ -103,6 +112,13 @@ Hooks.on("renderActorSheet", (app, html) => {
   else $grid.append($field); // fallback
 
   bindStarsignPick(html, actor);
+});
+
+// === Cleanup tooltips when sheet is closed ===
+Hooks.on("closeActorSheet", (app, html) => {
+  // Remove any lingering starsign tooltips
+  $(".starsign-tooltip").remove();
+  $(document).off("mousemove.starsigntip");
 });
 
 /** Map starsign names to effect slugs */
