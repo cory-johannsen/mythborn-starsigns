@@ -1,0 +1,46 @@
+{
+  "_id": "StarsignCrystalBloom0",
+  "name": "The Crystal Bloom",
+  "type": "condition",
+  "img": "modules/mythborn-starsigns/images/The Crystal Bloom (Leshy).png",
+  "system": {
+    "slug": "starsign-crystal-bloom",
+    "description": {
+      "value": "<p><strong>Myth:</strong> They grew from the tears of Thaloré herself, each petal a memory of those she'd lost. When the Tree healed, they offered themselves back to her as blossoms in the night sky.</p><p><strong>Aspect: Bloom's Grace.</strong> You can cause minor plant growth in a 10-foot radius once per day, or gain +1 to Medicine checks involving natural remedies.</p>"
+    },
+    "group": null,
+    "value": {
+      "isValued": false,
+      "value": null
+    },
+    "duration": null,
+    "persistent": false,
+    "active": true,
+    "removable": true,
+    "references": {
+      "parent": {
+        "id": "",
+        "type": ""
+      },
+      "children": [],
+      "overrides": [],
+      "overriddenBy": []
+    },
+    "overrides": []
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "coreVersion": "13.0.0",
+    "systemId": "pf2e",
+    "systemVersion": "6.0.0"
+  }
+}
+

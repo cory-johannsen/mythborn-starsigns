@@ -6,6 +6,8 @@ A Foundy VTT module to add custom star signs to Pathfinder 2E
 - Adds a *Starsign* field to PF2e PC sheets
 - Automatically rolls on **The Constellations of the Mythborn** when a character is created and stores the result on the actor (flags)
 - Shows the Starsign at the top of the sheet; GMs can reroll via a button (right-click value to copy/reset)
+- **Clickable Starsign**: Players can click their starsign to announce its activation in chat
+- **Condition System**: Activating a starsign applies a custom PF2e condition to the actor, automatically shown on their token
 
 
 **Installation**
@@ -23,3 +25,6 @@ A Foundy VTT module to add custom star signs to Pathfinder 2E
 - The value is stored at `actor.flags["mythborn-starsigns"].starsign` so you can reference it in macros/journals.
 - For existing PCs, toggle setting **Auto-assign Starsign if missing on open** (default on) or right-click the value → **Clear**, then have a GM click the reroll button.
 - This module avoids modifying PF2e system templates; it injects a UI block at render time and uses actor flags for data storage.
+- Click on any character's starsign to post a public chat message and apply the corresponding condition
+- Conditions appear automatically on tokens and can be manually removed via the token HUD (right-click)
+- See `STARSIGN-CONDITIONS.md` for detailed information about the condition system

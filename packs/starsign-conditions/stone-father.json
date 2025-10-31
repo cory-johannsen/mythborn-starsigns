@@ -1,0 +1,46 @@
+{
+  "_id": "StarsignStoneFather0",
+  "name": "The Stone Father",
+  "type": "condition",
+  "img": "modules/mythborn-starsigns/images/The Stone Father (Dwarves).png",
+  "system": {
+    "slug": "starsign-stone-father",
+    "description": {
+      "value": "<p><strong>Myth:</strong> The Stone Father forged the first anvils in the heartwood, shaping bark and sap into metal and gem. When his work was done, he sank into the earth beneath the roots, his hammer's echo forming the heartbeat of Thaloré.</p><p><strong>Aspect: Enduring Craft.</strong> When using the Crafting skill or repairing gear, roll twice and take the better result once per day.</p>"
+    },
+    "group": null,
+    "value": {
+      "isValued": false,
+      "value": null
+    },
+    "duration": null,
+    "persistent": false,
+    "active": true,
+    "removable": true,
+    "references": {
+      "parent": {
+        "id": "",
+        "type": ""
+      },
+      "children": [],
+      "overrides": [],
+      "overriddenBy": []
+    },
+    "overrides": []
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "coreVersion": "13.0.0",
+    "systemId": "pf2e",
+    "systemVersion": "6.0.0"
+  }
+}
+

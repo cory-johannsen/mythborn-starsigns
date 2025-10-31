@@ -1,0 +1,46 @@
+{
+  "_id": "StarsignSilentMoon000",
+  "name": "The Silent Moon",
+  "type": "condition",
+  "img": "modules/mythborn-starsigns/images/The Silent Moon (Gnomes).png",
+  "system": {
+    "slug": "starsign-silent-moon",
+    "description": {
+      "value": "<p><strong>Myth:</strong> The Gnomes were dreamers who listened to the murmurs of growing things. They vanished after following the whispers of the moon into its reflection, and there they remain, chasing endless wonder.</p><p><strong>Aspect: Whimsy's Whisper.</strong> Gain a +1 circumstance bonus to any Occultism or Nature check involving magical phenomena.</p>"
+    },
+    "group": null,
+    "value": {
+      "isValued": false,
+      "value": null
+    },
+    "duration": null,
+    "persistent": false,
+    "active": true,
+    "removable": true,
+    "references": {
+      "parent": {
+        "id": "",
+        "type": ""
+      },
+      "children": [],
+      "overrides": [],
+      "overriddenBy": []
+    },
+    "overrides": []
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "coreVersion": "13.0.0",
+    "systemId": "pf2e",
+    "systemVersion": "6.0.0"
+  }
+}
+

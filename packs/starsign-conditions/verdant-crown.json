@@ -1,0 +1,46 @@
+{
+  "_id": "StarsignVerdantCrown0",
+  "name": "The Verdant Crown",
+  "type": "condition",
+  "img": "modules/mythborn-starsigns/images/The Verdant Crown (Halflings).png",
+  "system": {
+    "slug": "starsign-verdant-crown",
+    "description": {
+      "value": "<p><strong>Myth:</strong> They were the Laughing Folk — gardeners of joy who believed happiness was sacred soil. When sorrow struck the world, they scattered their laughter into the wind and rose as stars so that all might still feel comfort in darkness.</p><p><strong>Aspect: Joybringer.</strong> Once per day, you can inspire courage as if casting Inspire Courage (cantrip level), even if untrained in Performance.</p>"
+    },
+    "group": null,
+    "value": {
+      "isValued": false,
+      "value": null
+    },
+    "duration": null,
+    "persistent": false,
+    "active": true,
+    "removable": true,
+    "references": {
+      "parent": {
+        "id": "",
+        "type": ""
+      },
+      "children": [],
+      "overrides": [],
+      "overriddenBy": []
+    },
+    "overrides": []
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "coreVersion": "13.0.0",
+    "systemId": "pf2e",
+    "systemVersion": "6.0.0"
+  }
+}
+

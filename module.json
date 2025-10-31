@@ -22,6 +22,19 @@
       "src": "styles/styles.css"
     }
   ],
+  "packs": [
+    {
+      "name": "starsign-conditions",
+      "label": "Starsign Conditions",
+      "path": "packs/starsign-conditions",
+      "type": "Item",
+      "system": "pf2e",
+      "ownership": {
+        "PLAYER": "LIMITED",
+        "ASSISTANT": "OWNER"
+      }
+    }
+  ],
   "url": "https://github.com/cory-johannsen/mythborn-starsigns",
   "bugs": "https://github.com/cory-johannsen/mythborn-starsigns/issues",
   "license": "MIT",

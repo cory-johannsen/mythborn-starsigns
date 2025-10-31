@@ -1,0 +1,46 @@
+{
+  "_id": "StarsignStormbreaker",
+  "name": "The Stormbreaker",
+  "type": "condition",
+  "img": "modules/mythborn-starsigns/images/The Stormbreaker (Orcs).png",
+  "system": {
+    "slug": "starsign-stormbreaker",
+    "description": {
+      "value": "<p><strong>Myth:</strong> The Stormbreaker challenged the heavens themselves, roaring until lightning split the sky. The gods struck him down — but his defiance lit the stormclouds forever.</p><p><strong>Aspect: Thundering Heart.</strong> Once per day, after reducing an enemy to 0 HP, gain temporary HP equal to your Constitution modifier.</p>"
+    },
+    "group": null,
+    "value": {
+      "isValued": false,
+      "value": null
+    },
+    "duration": null,
+    "persistent": false,
+    "active": true,
+    "removable": true,
+    "references": {
+      "parent": {
+        "id": "",
+        "type": ""
+      },
+      "children": [],
+      "overrides": [],
+      "overriddenBy": []
+    },
+    "overrides": []
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "coreVersion": "13.0.0",
+    "systemId": "pf2e",
+    "systemVersion": "6.0.0"
+  }
+}
+

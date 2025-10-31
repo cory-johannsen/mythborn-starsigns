@@ -5,7 +5,7 @@
   - Injects a visible read-only field at the top of PF2e Character sheets
   - Provides a small reroll button (GM only) and a right-click context to copy/reset
 */
-
+[]
 const MODULE_ID = "mythborn-starsigns";
 const TABLE_NAME = "The Constellations of the Mythborn";
 
@@ -105,7 +105,23 @@ Hooks.on("renderActorSheet", (app, html) => {
   bindStarsignPick(html, actor);
 });
 
-/** Post a chat message announcing the Starsign activation */
+/** Map starsign names to condition slugs */
+function getConditionSlugForStarsign(starsignName) {
+  const mapping = {
+    "The Wolf Twins": "starsign-wolf-twins",
+    "The Stone Father": "starsign-stone-father",
+    "The Verdant Crown": "starsign-verdant-crown",
+    "The Silent Moon": "starsign-silent-moon",
+    "The Shadow's Edge": "starsign-shadows-edge",
+    "The Stormbreaker": "starsign-stormbreaker",
+    "The Crystal Bloom": "starsign-crystal-bloom",
+    "The Seraphic Flame": "starsign-seraphic-flame",
+    "The Wandering Star": "starsign-wandering-star"
+  };
+  return mapping[starsignName] || null;
+}
+
+/** Post a chat message announcing the Starsign activation and apply condition */
 async function announceStarsign(actor, starsign) {
   if (!starsign || !starsign.name) {
     return ui.notifications.warn("No Starsign to announce.");
@@ -137,6 +153,64 @@ async function announceStarsign(actor, starsign) {
     content: content,
     type: CONST.CHAT_MESSAGE_TYPES.OTHER
   });
+
+  // Apply the corresponding condition to the actor
+  await applyStarsignCondition(actor, starsign);
+}
+
+/** Apply the starsign condition to the actor */
+async function applyStarsignCondition(actor, starsign) {
+  try {
+    const conditionSlug = getConditionSlugForStarsign(starsign.name);
+    if (!conditionSlug) {
+      console.warn(`${MODULE_ID} | No condition slug found for starsign: ${starsign.name}`);
+      return;
+    }
+
+    // Check if the actor already has this condition
+    const existingCondition = actor.itemTypes.condition?.find(c => c.slug === conditionSlug);
+    if (existingCondition) {
+      ui.notifications.info(`${starsign.name} condition is already active.`);
+      return;
+    }
+
+    // Get the condition from the compendium
+    const pack = game.packs.get(`${MODULE_ID}.starsign-conditions`);
+    if (!pack) {
+      console.error(`${MODULE_ID} | Condition compendium not found.`);
+      ui.notifications.error("Starsign condition compendium not found.");
+      return;
+    }
+
+    // Find the condition in the pack by matching the slug
+    const index = await pack.getIndex();
+    const conditionEntry = index.find(entry => {
+      // We need to get the actual document to check its slug
+      return entry.name === starsign.name;
+    });
+
+    if (!conditionEntry) {
+      console.warn(`${MODULE_ID} | Condition not found in compendium for: ${starsign.name}`);
+      ui.notifications.warn(`Condition for ${starsign.name} not found in compendium.`);
+      return;
+    }
+
+    // Get the full condition document
+    const conditionDoc = await pack.getDocument(conditionEntry._id);
+    if (!conditionDoc) {
+      console.error(`${MODULE_ID} | Failed to load condition document for: ${starsign.name}`);
+      return;
+    }
+
+    // Create the condition on the actor
+    const conditionData = conditionDoc.toObject();
+    await actor.createEmbeddedDocuments("Item", [conditionData]);
+    
+    ui.notifications.info(`${starsign.name} condition applied to ${actor.name}.`);
+  } catch (error) {
+    console.error(`${MODULE_ID} | Error applying condition:`, error);
+    ui.notifications.error("Failed to apply starsign condition.");
+  }
 }
 
 async function ensureStarsign(actor) {

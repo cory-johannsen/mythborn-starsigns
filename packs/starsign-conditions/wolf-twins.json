@@ -1,0 +1,46 @@
+{
+  "_id": "StarsignWolfTwins00",
+  "name": "The Wolf Twins",
+  "type": "condition",
+  "img": "modules/mythborn-starsigns/images/The Wolf Twins (Humans).png",
+  "system": {
+    "slug": "starsign-wolf-twins",
+    "description": {
+      "value": "<p><strong>Myth:</strong> The Twins were said to be the first wanderers of the branches — curious, bold, never still. They built bridges where others saw chasms, and sang songs to the stars until the stars sang back. When they vanished, they left behind the gift of adaptability — the courage to be anyone, anywhere.</p><p><strong>Aspect: Versatile Soul.</strong> Once per day, gain a +1 circumstance bonus to any skill check you've never trained before, representing human adaptability.</p>"
+    },
+    "group": null,
+    "value": {
+      "isValued": false,
+      "value": null
+    },
+    "duration": null,
+    "persistent": false,
+    "active": true,
+    "removable": true,
+    "references": {
+      "parent": {
+        "id": "",
+        "type": ""
+      },
+      "children": [],
+      "overrides": [],
+      "overriddenBy": []
+    },
+    "overrides": []
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "coreVersion": "13.0.0",
+    "systemId": "pf2e",
+    "systemVersion": "6.0.0"
+  }
+}
+
